@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 국내 안마의자 시장 대시보드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: header → 4 KPI tiles → market-size chart + rivals compare → trend strip (price / rental / lounge) → data gaps → actions → sources */
+:root{
+  --bg:#f4f5f3; --surface:#ffffff; --ink:#151a1e; --muted:#5b6670; --line:#dde1df;
+  --accent:#0d6b5e; --accent-soft:#e1efeb; --rival:#8a96a0; --warn:#b4570f; --warn-soft:#fbeadc;
+  --display:"IBM Plex Sans KR","Noto Sans KR",system-ui,sans-serif;
+  --body:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11161a; --surface:#1a2126; --ink:#eef1f0; --muted:#9aa6ad; --line:#2c353b;
+    --accent:#4fc3ad; --accent-soft:#18332e; --rival:#6f7b84; --warn:#f0a35e; --warn-soft:#3a2a1b; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11161a; --surface:#1a2126; --ink:#eef1f0; --muted:#9aa6ad; --line:#2c353b;
+  --accent:#4fc3ad; --accent-soft:#18332e; --rival:#6f7b84; --warn:#f0a35e; --warn-soft:#3a2a1b; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 48px;display:grid;gap:20px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;line-height:1.3}
+h1{font-size:28px} h2{font-size:18px} h3{font-size:15px}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
+.sub{font-size:12px;font-weight:700;color:var(--muted)}
+.est{font-size:11px;font-weight:700;color:var(--warn);background:var(--warn-soft);border-radius:99px;padding:1px 8px;white-space:nowrap}
+.pill{font-size:12px;font-weight:700;border-radius:99px;padding:2px 10px;white-space:nowrap;background:var(--accent-soft);color:var(--accent)}
+
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between}
+.eyebrow{font-size:13px;font-weight:700;color:var(--accent)}
+.conf{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:3px 10px}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:4px;align-content:start}
+.kpi .v{font-family:var(--display);font-size:32px;font-weight:700;line-height:1.15}
+.kpi .v small{font-size:15px;font-weight:500;margin-left:2px}
+.kpi .l{font-size:13px;color:var(--muted)}
+.kpi.flat .v{color:var(--warn)} .kpi.us .v{color:var(--accent)}
+
+.two{display:grid;grid-template-columns:1.1fr 1fr;gap:16px}
+.chart-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+svg text{font-family:var(--body)}
+
+.vs{display:grid;gap:18px}
+.vs-row{display:grid;gap:8px}
+.vs-bar{display:grid;grid-template-columns:76px 1fr 86px;gap:10px;align-items:center;font-size:13px}
+.track{height:18px;background:var(--bg);border-radius:4px;overflow:hidden}
+.fill{height:100%;border-radius:4px}
+.fill.us{background:var(--accent)} .fill.rv{background:var(--rival)}
+.verdict{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.verdict div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px}
+.verdict b{display:block;font-family:var(--display);font-size:15px}
+
+.trends{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.trend{display:grid;gap:12px;align-content:start}
+.shift{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
+.shift div{border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.45}
+.shift .from{background:var(--bg);color:var(--muted)}
+.shift .to{background:var(--accent-soft);color:var(--ink);font-weight:500}
+.shift .arr{color:var(--muted);font-size:14px}
+.trend p{margin:0;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:2px 10px;color:var(--muted)}
+
+.gap{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;border:1px dashed var(--warn);background:var(--warn-soft);border-radius:12px;padding:14px 18px;font-size:14px}
+.gap b{color:var(--warn)}
+
+.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.act{display:grid;gap:8px;align-content:start}
+.act .n{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--surface);font-weight:700;font-family:var(--display)}
+.act .why{font-size:13px;color:var(--muted)}
+.act p{margin:0;font-size:14px}
+
+.sources{font-size:13px;margin:0;padding-left:18px;columns:2;column-gap:28px}
+.sources a{color:var(--accent)}
+.sources a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+@media (max-width:900px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .two,.trends,.actions{grid-template-columns:1fr}
+  .sources{columns:1}
+}
+@media (max-width:420px){ .kpi .v{font-size:28px} .vs-bar{grid-template-columns:64px 1fr 76px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <div class="eyebrow">내년 영업전략 보고용 시장조사</div>
+    <h1>2026 국내 안마의자 시장</h1>
+    <p class="muted" style="margin:4px 0 0;font-size:14px">2026년 11월 기준 · 공개 기사와 업계 추정치 · 내부 데이터로 확인 필요</p>
+  </div>
+  <span class="conf">숫자는 모두 추정치</span>
+</header>
+
+<section class="kpis" aria-label="핵심 지표">
+  <div class="kpi"><div class="v num">약 1<small>조원</small></div><div class="l">국내 안마의자 시장 규모, 세라젬·바디프랜드 양강</div></div>
+  <div class="kpi flat"><div class="v num">4<small>년 정체</small></div><div class="l">헬스케어가전 시장 2022~2025 약 1.5조원 유지</div></div>
+  <div class="kpi"><div class="v num">2<small>위</small></div><div class="l">매출 기준 바디프랜드 (1위 세라젬)</div></div>
+  <div class="kpi us"><div class="v num">1<small>위</small></div><div class="l">수익성 기준 바디프랜드, 영업이익 약 10배</div></div>
+</section>
+
+<section class="two">
+  <div class="card">
+    <div class="chart-head"><h2>성장이 멈춘 포화 시장</h2><span class="est">추정치</span></div>
+    <div class="sub" style="margin-bottom:6px">국내 헬스케어가전 시장 규모 (조원)</div>
+    <svg viewBox="0 0 520 256" width="100%" role="img" aria-label="2021년 약 1조원, 2022년부터 2025년까지 약 1.5조원에서 정체">
+      <g stroke="var(--line)" stroke-width="1">
+        <line x1="44" y1="40" x2="500" y2="40"/><line x1="44" y1="110" x2="500" y2="110"/><line x1="44" y1="180" x2="500" y2="180"/>
+      </g>
+      <g fill="var(--muted)" font-size="12" text-anchor="end">
+        <text x="36" y="44">1.5</text><text x="36" y="114">1.0</text><text x="36" y="184">0.5</text>
+      </g>
+      <rect x="165" y="20" width="335" height="200" fill="var(--warn-soft)" opacity=".7"/>
+      <text x="330" y="80" text-anchor="middle" font-size="13" fill="var(--warn)" font-weight="700">2022~2025 4년 연속 정체</text>
+      <polygon points="80,110 180,40 280,40 380,40 480,40 480,220 80,220" fill="var(--accent)" opacity=".12"/>
+      <polyline points="80,110 180,40 280,40 380,40 480,40" fill="none" stroke="var(--accent)" stroke-width="3"/>
+      <g fill="var(--surface)" stroke="var(--accent)" stroke-width="3">
+        <circle cx="80" cy="110" r="5"/><circle cx="180" cy="40" r="5"/><circle cx="280" cy="40" r="5"/><circle cx="380" cy="40" r="5"/>
+      </g>
+      <circle cx="480" cy="40" r="6" fill="var(--accent)"/>
+      <g fill="var(--ink)" font-size="12" text-anchor="middle">
+        <text x="80" y="98">약 1.0</text><text x="480" y="28" font-weight="700">약 1.5</text>
+      </g>
+      <g fill="var(--muted)" font-size="12" text-anchor="middle">
+        <text x="80" y="242">2021</text><text x="180" y="242">2022</text><text x="280" y="242">2023</text><text x="380" y="242">2024</text><text x="480" y="242">2025</text>
+      </g>
+    </svg>
+    <p style="margin:6px 0 0;font-size:14px">LG전자·SK매직·코웨이 등 대기업이 들어오면서 <b>공급 과잉</b>이 심해졌습니다.</p>
+  </div>
+
+  <div class="card">
+    <div class="chart-head"><h2>세라젬 vs 바디프랜드 (2025)</h2><span class="est">추정치</span></div>
+    <div class="vs">
+      <div class="vs-row">
+        <div class="sub">매출</div>
+        <div class="vs-bar"><span>세라젬</span><div class="track"><div class="fill rv" style="width:100%"></div></div><span class="num">5,000억원대</span></div>
+        <div class="vs-bar"><span><b>바디프랜드</b></span><div class="track"><div class="fill us" style="width:80%"></div></div><span class="num"><b>4,000억원대</b></span></div>
+      </div>
+      <div class="vs-row">
+        <div class="sub">영업이익</div>
+        <div class="vs-bar"><span>세라젬</span><div class="track"><div class="fill rv" style="width:10%"></div></div><span class="num">20억원대</span></div>
+        <div class="vs-bar"><span><b>바디프랜드</b></span><div class="track"><div class="fill us" style="width:100%"></div></div><span class="num"><b>200억원대</b></span></div>
+      </div>
+      <div class="verdict">
+        <div><b>매출 1위 세라젬</b>격차를 줄인 힘은 중저가 라인업 확대</div>
+        <div><b>수익성 1위 바디프랜드</b>보고서에 1위를 쓸 땐 기준 명시</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="trends">
+  <div class="card trend">
+    <div class="chart-head"><h2>가격대</h2><span class="pill">중저가 · 소형화</span></div>
+    <div class="shift"><div class="from">대형 평형 50대 이상 고객</div><span class="arr">→</span><div class="to">공간을 덜 차지하는 젊은 감각 제품</div></div>
+    <p>고가 브랜드도 입문형으로 내려오는 중입니다.</p>
+    <div class="chips"><span class="chip">세라젬 마스터 V5 395만원대</span><span class="chip">코웨이 패브릭 소형</span></div>
+  </div>
+  <div class="card trend">
+    <div class="chart-head"><h2>렌탈</h2><span class="pill">플랫폼 경쟁</span></div>
+    <div class="shift"><div class="from">안마의자 단품 렌탈</div><span class="arr">→</span><div class="to">정수기·침대까지 묶은 생활가전 렌탈</div></div>
+    <p>코웨이와 세라젬이 렌탈 플랫폼으로 묶어서 들어옵니다.</p>
+    <div class="chips"><span class="chip">세라젬 침대·정수기 확장</span><span class="chip">코웨이 비렉스</span></div>
+  </div>
+  <div class="card trend">
+    <div class="chart-head"><h2>라운지</h2><span class="pill">체험형 공간</span></div>
+    <div class="shift"><div class="from">진열하고 파는 곳</div><span class="arr">→</span><div class="to">건강 상태·생활습관에 맞춰 추천받는 곳</div></div>
+    <p>세라젬·바디프랜드 모두 출점 경쟁에서 효율화로 돌아섰습니다.</p>
+    <div class="chips"><span class="chip">점포 수보다 효율</span></div>
+  </div>
+</section>
+
+<div class="gap"><b>공개 자료 없음</b><span>렌탈 / 일시불 비중</span><span>채널별 점유율 (직영 라운지 · 백화점 · 홈쇼핑 · 온라인)</span><span class="muted">→ 회사 내부 데이터로 채울 칸</span></div>
+
+<section class="card" style="display:grid;gap:16px">
+  <h2>우리가 지금 바로 할 일</h2>
+  <div class="actions">
+    <div class="act"><span class="n">1</span><h3>중저가 라인으로 신규 고객 확보</h3><span class="why">세라젬도 입문형으로 내려왔다</span><p>199만원 라인을 젊은 층·1~2인 가구의 첫 구매 입구로 확실히 잡는다.</p></div>
+    <div class="act"><span class="n">2</span><h3>렌탈 방어선 구축</h3><span class="why">경쟁사가 렌탈 플랫폼으로 묶어 들어온다</span><p>렌탈 전환 교육과 결합상품으로 고객을 장기 계약으로 붙잡는다.</p></div>
+    <div class="act"><span class="n">3</span><h3>라운지는 체험·추천 공간으로</h3><span class="why">경쟁사가 점포를 줄이는 지금이 기회</span><p>라운지 수보다 방문 대비 당일 계약 전환율로 승부한다.</p></div>
+  </div>
+</section>
+
+<section class="card" style="display:grid;gap:10px">
+  <h2>출처</h2>
+  <ul class="sources">
+    <li><a href="https://www.sidae.com/article/2026031010093293226">시대일보 — 시장 1조·양강 구도, 2025 매출 추정</a></li>
+    <li><a href="https://www.sidae.com/article/2026012113595493761">시대일보 — 헬스케어가전 1.5조 정체</a></li>
+    <li><a href="https://v.daum.net/v/pu9KPTRfyV">매일경제 — MZ 겨냥 안마의자의 변신</a></li>
+    <li><a href="https://news.bizwatch.co.kr/article/consumer/2025/04/11/0030">비즈워치 — 매출은 세라젬, 수익은 바디프랜드</a></li>
+    <li><a href="https://www.segye.com/newsView/20260816503468">세계일보 — 체험형 공간으로 바뀌는 오프라인</a></li>
+    <li><a href="https://biz.sbs.co.kr/amp/article/20000337339">SBS Biz — 점포 줄이는 세라젬·바디프랜드</a></li>
+  </ul>
+</section>
+
+</div>
+</body>
+</html>
